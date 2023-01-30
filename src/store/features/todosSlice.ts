@@ -1,4 +1,8 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import {
+  createAsyncThunk,
+  createSlice,
+  PayloadAction,
+} from '@reduxjs/toolkit';
 import axios from 'axios';
 
 const url = 'https://jsonplaceholder.typicode.com/todos';
@@ -30,7 +34,13 @@ export const TodosSlice = createSlice({
   name: 'todos',
   initialState,
   // Reducers is an object that contains our actions. The actions are the functions that can mutate our state
-  reducers: {},
+  reducers: {
+    deleteTodo: (state, action: PayloadAction<number>) => {
+      state.todoList = state.todoList.filter(
+        (todo: Todo) => todo.id !== action.payload
+      );
+    },
+  },
   extraReducers: (builder) => {
     /* addCase takes two parameters:
       - the first is the name of the async thunk. The async thunk has three states:
@@ -44,4 +54,5 @@ export const TodosSlice = createSlice({
   },
 });
 
+export const { deleteTodo } = TodosSlice.actions;
 export default TodosSlice.reducer;
